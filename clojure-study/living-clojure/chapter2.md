@@ -49,4 +49,54 @@
 
 * `(empty? a)` : 컬렉션이 비어있는지 확인
   * 실제 정의 : `(defn empty? [col] (not (seq coll)))`
-* 
+* `(every? fn coll)` : 진위 함수가 컬렉션의 모든 요소에 대해 참으로 평가하면 `true`, 아니면 `false`를 반환
+* `(not-any? fn coll)` : 컬렉션의 요소가 하나라도 참이면 `false`를 반환
+* `(some fn coll)` : 진위 함수가 평가한 값이 처음으로 논리적 참일 때 그 평가한 값을 반환하고, 아니면 `nil`을 반환한다.
+    * 시퀀스에 요소가 들어 있는지 확인할 때, 집합을 진위함수로 사용하면 매우 편리
+    * 집합을 진위함수로 사용할 경우, 집합에 있는 요소와 처음으로 일치하는 시퀀스 요소를 반환 
+        * 예시 : `(some #{4 5} [1 2 3 4 5]) ;=> 4`
+
+### 흐름 제어 이용하기
+
+* `if` 문의 기본 구성
+    ```clojure
+    (if boolean-function        ;;  진위 함수
+     then-statement             ;;  조건이 참일 경우 실행
+     else-statement )           ;;  조건이 거짓일 경우 실행
+    ```
+    * `if-let` : 식을 평가한 결과를 심볼에 바인딩 한 후, `if` 문과 유사하게 동작. `let`으로 바인딩 한 후, `if` 문으로 넘기는 것보다 간결함
+* `when` : 진위 함수의 결과가 참이면 본문을 평가하고, 참이 아니면 `nil`을 반환
+    * `when-let` : (예시) `(when-let [need-to-grow-small true] "drink bottle") ;=> "drink bottle"`
+* `cond` : 1) 검사식과 2) 그 검사식이 참일 때 평가될 식 을 쌍으로 받는다. **패턴매칭...?**
+    * 다른 언어의 `if/else if`와 유사
+    * 디폴트 절을 추가하고 싶을 경우, 맨 마지막 검사식 자리에 `:else` 키워드를 넣는다.
+    ```clojure
+    (let [bottle "mystery"]
+        (cond
+            (= bottle "poison") "don't touch"
+            (= bottle "drinkme") "grow smaller"
+            (= bottle "empty") "all gone"
+            :else "unknown"))
+    ;=> "unknown"
+    ```
+    * 여기서 `:else` 는 논리적 참으로 평가된다.
+* `case` : `cond`에서 검사할 심볼이 같고, 그 값을 `=`로 비교할 수 있는 경우 사용
+    * `cond`와 달리, 참인 절이 없는 경우 예외를 발생시킨다.
+    * `case`에 기본값을 제공하려면, 맨 마지막에 하나의 식을 주면 된다.
+
+## 함수를 만드는 함수 (High-order function...?)
+
+* `커링(currying)` : 다중 인수를 갖는 함수를 여러 개의 단일 인수 함수들로 연결(chain)하는 방식으로 변환
+    * 클로져에서는 `partial` 함수 이용
+    * 하스켈의 경우, 다중 인수를 가지는 함수에 arity 보다 적은 수의 인수를 넘겨줬을 때에도 커링이 가능하다.
+    ```haskell
+    mult :: (Int -> (Int -> Int))
+    mult a b = a * b
+ 
+    m = mult 6
+    show (mult 4) -- 24
+    ```
+* `comp` 함수는 임의의 함수들을 인자로 받아 새로운 합성 함수를 반환한다.
+    * 합성 함수는 인수로 받은 함수들을 오른쪽부터 왼쪽으로 실행
+    * `comp`는 일종의 syntatic sugar로 생각할 수 있다.
+        * `comp`가 없을 경우, 엄청난 괄호 지옥이(....)
