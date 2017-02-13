@@ -8,3 +8,5 @@
 
 * [Devise](./Devise) : 사용자 인증 라이브러리
   * [Omniauth](./Omniauth) 
+* [Simple form](./SimpleForm) : HTML form 태그
+* [Paper clip](./PaperClip) : 첨부파일을 위한 Gem
