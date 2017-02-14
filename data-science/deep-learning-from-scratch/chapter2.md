@@ -98,4 +98,3 @@ def XOR(x1, x2):
 
 논리 게이트를 퍼셉트론으로 구현 가능하다 -> 좀 더 복잡한 회로(반가산기, 전가산기, ALU, CPU)도 퍼셉트론으로 만들 수 있다. -> " **컴퓨터도 퍼셉트론으로 표현할 수 있다.** "
 * [Coursera "NAND에서 테트리스까지"](https://www.coursera.org/learn/build-a-computer) 참고
-
