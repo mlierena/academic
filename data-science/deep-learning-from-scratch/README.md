@@ -2,5 +2,6 @@
 
 * @simnalamburt : https://github.com/simnalamburt/snucse/tree/master/Deep%20Learning%20from%20Scratch
 * @JungWinter : https://github.com/JungWinter/Code_Study/tree/master/Book/DeepLearningFromScratch
-* @pinkrespect : https://github.com/pinkrespect/DeepLearningFromScratch/blob/master/
+* @pinkrespect : https://github.com/pinkrespect/DeepLearningFromScratch
 * @malkoG : https://github.com/malkoG/academic/tree/master/data-science/deep-learning-from-scratch
+* @Cura-inthelab : https://github.com/Cura-inthelab/deep-learning
