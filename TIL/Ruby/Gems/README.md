@@ -10,3 +10,5 @@
   * [Omniauth](./Omniauth) 
 * [Simple form](./SimpleForm) : HTML form 태그
 * [Paper clip](./PaperClip) : 첨부파일을 위한 Gem
+* [RMagick](./RMagick) : 이미지 처리
+* [AWS-SDK](./AWS-SDK) : 아마존 AWS

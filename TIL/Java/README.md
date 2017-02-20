@@ -42,13 +42,25 @@ while(condition) {
 ```
 
 ## Array
+다차원 배열을 생성할 때, 차이가 나므로 주의바람
 
 #### 크기 10짜리 int형 배열 만들기
 ```java
 int[] a = new int[10];
 ```
+#### 4x3 2차원 배열 만들기
+```java
+// java
+int[][] = new int[4][3];
+```
 
+```csharp
+// C#
+int[,] = new int[4,3]
+```
 #### Problem Solving 할 때 참고
+
+왠만하면 배열은 초기화할 때, 0으로 채워짐.
 ```
 For type byte, the default value is zero, that is, the value of (byte) is 0.
 For type short, the default value is zero, that is, the value of (short) is 0.
@@ -81,6 +93,7 @@ const
 ## 컬렉션 이용하기
 
 ```java
+// java
 import java.util.*;
 
 ArrayList
@@ -91,6 +104,7 @@ HashMap
 ```
 
 ```csharp
+// C#
 using System.Collection.Generics;
 
 Stack

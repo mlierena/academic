@@ -25,7 +25,10 @@
     * working tree, 스테이지 영역, 최신 commit 사이의 변경을 확인할 때 사용
     * `git diff HEAD` : 최신 commit 과의 차이를 확인
         * 여기서 HEAD는 현재 작업하고 있는 브랜치의 최신 commit을 참조하는 포인터
-    
+* `git push` : 원격 저장소에 변경 내용을 전송
+    * `git push origin master` : 원본 저장소의 master 브랜치에 변경내용을 반영
+    * `git push origin --delete <branch_name>` : 원본 저장소의 특정 브랜치를 삭제
+
 
 ## 브랜치 생성
 브랜치는 각각의 작업을 병행할 때 사용한다.
