@@ -94,9 +94,114 @@
     mult a b = a * b
  
     m = mult 6
-    show (mult 4) -- 24
+    show (m 4) -- 24
     ```
 * `comp` 함수는 임의의 함수들을 인자로 받아 새로운 합성 함수를 반환한다.
     * 합성 함수는 인수로 받은 함수들을 오른쪽부터 왼쪽으로 실행
     * `comp`는 일종의 syntatic sugar로 생각할 수 있다.
         * `comp`가 없을 경우, 엄청난 괄호 지옥이(....)
+
+
+## 구조분해 (destructuring)
+코드를 분해하여 심볼에 바인딩 한다!
+```clojure
+(let [[color size] ["blue" "small"]]
+  (str "The " color " door is " size))
+;=> "The blue door is small"
+```
+color와 size 심볼에 값이 할당되는 것을 볼 수 있다.
+* `구조분해`는 바인딩 식(binding expression)에서 심볼들의 위치에 따라 어떤 값을 어떤 심볼에 바인딩할지 결정한다.
+* 벡터 구조분해를 사용하면 순차적인 자료구조를 분해할때 더 간결하고 읽기 쉬우면서도 우아한 코드를 만들 수 있다.
+```clojure
+; 구조분해는 중첩된 경우에도 아주 쉽게 처리한다.
+(let [[color [size]] ["blue" ["very small"]]
+  (str "The " color " door is " size))
+;=> ~~~~
+```
+* 구조분해를 통해 원하는 값을 심볼로 바인딩하면서, 처음 자료구조 전체를 얻고 싶다면 `:as` 키워드를 사용하자.
+```clojure
+(let [[color [size] :as original] ["blue" ["small"]]]
+  {:color color :size size :original original})
+;=> {:color "blue", :size "small", :original ["blue" ["small"]]}
+```
+* 구조분해는 맵에도 역시 적용 가능하다. 
+  * let에서 맵의 키에 대응되는 값을 심볼에 바인딩
+```clojure
+(let [{flower1 :flower1 flower2 :flower2}
+      {:flower1 "red" :flower2 "blue"}]
+  (str "The flowers are " flower1 " and " flower2))
+;=> "The flowers are red and blue"
+```
+* `:or` 키워드를 쓰면, 맵에 해당요소가 없을 때를 위한 디폴트 값을 설정할 수 있다.
+```clojure
+(let [{flower1 :flower1 flower2 :flower2 :or {flower2 "missing"}}
+      {:flower1 "red"}]
+  (str "The flowers are " flower1 " and " flower2))
+;=> "The flowers are red and missing" 
+```
+* 맵에서도 역시 `:as` 키워드를 써서 처음 자료구조 전체를 얻을 수도 있다.
+```clojure
+(let [{flower1 :flower1 :as all-flowers}
+      {:flower1 "red"}]
+  [flower1 all-flowers])
+;=> ["red", {:flower1 "red"}]
+```
+* 심볼 이름을 키의 이름과 같게 할 수 있으므로 `:keys` 키워드를 사용해서 간결하게 표현할 수 있다.
+```clojure
+(let [{:keys [flower1 flower2]} ;=> {flower1 :flower1 flower2 :flower2}
+      {:flower1 "red" :flower2 "blue"}]
+  (str "The flowers are " flower1 " and " flower2))
+;=> "The flowers are red and blue"
+```
+* `defn`으로 함수를 정의할 때도 함수의 인수에 대해서 구조분해를 적용할 수 있다.
+```clojure
+(defn flower-colors [{:keys [flower1 flower2]}]
+  (str "The flowers are " flower1 " and " flower2))
+
+(flower-colors {:flowers "red" :flower2 "blue"})
+;=> "The flowers are red and blue"
+```
+
+## 지연(lazyness)
+* `range` 함수는 lazy sequence 를 반환한다. 
+  * 인수 하나를 주면 범위의 끝을 지정할 수 있다.
+  * 끝을 지정하지 않으면 무한 시퀀스가 된다(...)
+* `take` 함수는 전체 무한 시퀀스를 평가해서 결과를 만들어내는 대신 요구하는 갯수만큼만 평가한다.
+```clojure
+(take 10 (range))
+;=> (0 1 2 3 4 5 6 7 8 9)
+```
+* `repeat` 함수는 반복된 요소로 된 무한 시퀀스를 만든다. `range` 처럼 반복할 횟수를 인수로 받는다.
+```clojure
+(repeat 3 "rabbit")
+;=> ("rabbit" "rabbit" "rabbit")
+
+(take 5 (repeat "rabbit"))
+;=> ("rabbit" "rabbit" "rabbit" "rabbit" "rabbit")
+```
+* `repeat`는 값은 값을 반복해서 시퀀스로 생성하는 반면, `repeatedly`는 인수로 받은 함수를 반복해서 실행한다.
+  * 인수가 없는 함수를 받기 때문에, 함수를 인자로 넘길때 무명함수로 바꿔줘야 한다.
+```clojure
+(take 10 (repeatedly #(rand-int 10)))
+;=> (9 9 5 8 3 1 0 9 3 2)
+```
+* `cycle` : 컬렉션을 인수로 받아서 그 컬렉션의 요소들이 무한히 반복되는 지연 시퀀스를 반환한다.
+```clojure
+(take 3 (cycle ["big" "small"]))
+;=> ("big" "small" "big")
+```
+### 지연이 왜 필요한가?
+* 일반적이고 우아한 방식으로 코드를 작성?
+* 실제 처리할 필요가 있는 것만 사용
+  * 계산량이 많은 작업을 처리할 때나 데이터베이스에 요청하고 필요할 때 그 결과(offset..?)를 나누어서 받을 때 유용
+
+## 재귀
+시퀀스를 순회하는 방법.
+
+
+
+## 함수형 프로그래밍에서의 데이터 변환
+
+### map
+
+### reduce
