@@ -12,3 +12,4 @@
 * [Paper clip](./PaperClip) : 첨부파일을 위한 Gem
 * [RMagick](./RMagick) : 이미지 처리
 * [AWS-SDK](./AWS-SDK) : 아마존 AWS
+* [annotate](./Annotate) : 칼럼의 정보를 주석으로 표시

@@ -48,7 +48,11 @@
 #### 컬렉션에 논리 검사를 적용하기 위해 쓰이는 함수 정리
 
 * `(empty? a)` : 컬렉션이 비어있는지 확인
-  * 실제 정의 : `(defn empty? [col] (not (seq coll)))`
+  * 실제 정의 
+  ```clojure
+   (defn empty?
+    [coll] (not (seq coll)))
+  ```
 * `(every? fn coll)` : 진위 함수가 컬렉션의 모든 요소에 대해 참으로 평가하면 `true`, 아니면 `false`를 반환
 * `(not-any? fn coll)` : 컬렉션의 요소가 하나라도 참이면 `false`를 반환
 * `(some fn coll)` : 진위 함수가 평가한 값이 처음으로 논리적 참일 때 그 평가한 값을 반환하고, 아니면 `nil`을 반환한다.
@@ -65,8 +69,23 @@
      else-statement )           ;;  조건이 거짓일 경우 실행
     ```
     * `if-let` : 식을 평가한 결과를 심볼에 바인딩 한 후, `if` 문과 유사하게 동작. `let`으로 바인딩 한 후, `if` 문으로 넘기는 것보다 간결함
+    ```clojure
+    (if-let [need-to-grow-small (> 5 3)]
+      "drink bottle"
+      "don't drink bottle")
+    ```
 * `when` : 진위 함수의 결과가 참이면 본문을 평가하고, 참이 아니면 `nil`을 반환
-    * `when-let` : (예시) `(when-let [need-to-grow-small true] "drink bottle") ;=> "drink bottle"`
+    ```clojure
+      (when true
+        "drink bottle")
+      ;=> "drink bottle"
+    ```
+    * `when-let` 
+    ```clojure
+      (when-let [need-to-grow-small true] 
+        "drink bottle") 
+      ;=> "drink bottle"
+    ```
 * `cond` : 1) 검사식과 2) 그 검사식이 참일 때 평가될 식 을 쌍으로 받는다. **패턴매칭...?**
     * 다른 언어의 `if/else if`와 유사
     * 디폴트 절을 추가하고 싶을 경우, 맨 마지막 검사식 자리에 `:else` 키워드를 넣는다.
@@ -83,18 +102,43 @@
 * `case` : `cond`에서 검사할 심볼이 같고, 그 값을 `=`로 비교할 수 있는 경우 사용
     * `cond`와 달리, 참인 절이 없는 경우 예외를 발생시킨다.
     * `case`에 기본값을 제공하려면, 맨 마지막에 하나의 식을 주면 된다.
+    ```clojure
+    (let [bottle "mystery"]
+      (case bottle
+        "poison" "don't touch"
+        "drinkme" "grow smaller"
+        "empty" "all gone"
+                "unknown"))
+    ```
 
 ## 함수를 만드는 함수 (High-order function...?)
 
 * `커링(currying)` : 다중 인수를 갖는 함수를 여러 개의 단일 인수 함수들로 연결(chain)하는 방식으로 변환
     * 클로져에서는 `partial` 함수 이용
+    ```clojure
+    (defn adder [x y]
+      (+ x y))
+
+    (defn adder-6 (partial adder 6))
+    (adder-6 4)
+    ;; -> 10
+
+    (defn multiplier [x y]
+      (* x y))
+    (defn multiplier-6 (partial multiplier 6))
+    ((comp multiplier-6 adder-6) 4) ;; -> 60
+    ((comp adder-6 multiplier-6) 4) ;; -> 30
+    ```
     * 하스켈의 경우, 다중 인수를 가지는 함수에 arity 보다 적은 수의 인수를 넘겨줬을 때에도 커링이 가능하다.
     ```haskell
     mult :: (Int -> (Int -> Int))
     mult a b = a * b
  
+    add :: (Int -> (Int -> Int))
     m = mult 6
-    show (m 4) -- 24
+    a = add 6
+    show $ a . m 4 -- 30
+    show $ m . a 4 -- 60
     ```
 * `comp` 함수는 임의의 함수들을 인자로 받아 새로운 합성 함수를 반환한다.
     * 합성 함수는 인수로 받은 함수들을 오른쪽부터 왼쪽으로 실행
@@ -166,6 +210,15 @@ color와 size 심볼에 값이 할당되는 것을 볼 수 있다.
 * `range` 함수는 lazy sequence 를 반환한다. 
   * 인수 하나를 주면 범위의 끝을 지정할 수 있다.
   * 끝을 지정하지 않으면 무한 시퀀스가 된다(...)
+  ```clojure
+  (range 5)
+  ;; -> (0 1 2 3 4)
+  (class (range))
+  ;; -> clojure.lang.LazySeq
+
+  (range)
+  ;; 무한 리스트를 생성하게 됨
+  ```
 * `take` 함수는 전체 무한 시퀀스를 평가해서 결과를 만들어내는 대신 요구하는 갯수만큼만 평가한다.
 ```clojure
 (take 10 (range))
@@ -221,7 +274,7 @@ clojure를 비롯한 함수형 언어에서 자료구조를 순회할 때 재귀
 ```clojure
 (defn alice-is [input]
   (loop [in input
-          out []
+          out []]
     (if (empty? in)
       out
       (recur (rest in)          ;; 재귀함수를 다시 호출한다.
@@ -281,6 +334,7 @@ clojure를 비롯한 함수형 언어에서 자료구조를 순회할 때 재귀
 
 ```clojure
 (class (map #(str %) animals))
+;; -> clojure.lang.LazySeq
 ```
 `map`은 lazy 시퀀스를 반환한다! 
 lazy 시퀀스가 의미하는 것은 즉, 무한의 시퀀스를 다룰 수 있다는 것과 같다.
