@@ -1,5 +1,6 @@
 *.swp
 
 # ignore homework files
+**/**/HW
 */hw
 *.class
