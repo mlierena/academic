@@ -4,3 +4,18 @@
 **/**/HW
 */hw
 *.class
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# virtualenv
+.venv
+venv/
+ENV/
+env/
