@@ -1,0 +1,1 @@
+`Http` 모듈을 설치할때는 `elm package install elm-lang/http -y`
