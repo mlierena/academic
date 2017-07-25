@@ -17,14 +17,20 @@
         * 부트스트래핑은 Chef 서버에 노드를 등록하여 chef-client를 설치하여, 점검하는 과정을 의미한다. 따라서, one-time process 이다.
         * ssh 키 기반 인증 : `knife bootstrap ADDRESS --ssh-user USER --sudo --identity-file IDENTITY_FILE --node-name node1-centos --run-list 'recipe[learn_chef_httpd]`
         * 비밀번호 기반 인증 : `knife bootstrap ADDRESS --ssh-user USER --ssh-password 'PASSWORD' --sudo --use-sudo-password --node-name node1-centos --run-list 'recipe[learn_chef_httpd]'`
+            * ex) 해당 노드에 아이디, 패스워드로 접근하여, 특정 role을 부여하고 세팅하는 작업
+                * `knife bootstrap $NODE_IP -r 'role[mesos_agent]' -x $ADMIN_ID -P $ADMIN_PASSWORD`
     * `cookbook upload`
         * 쿡북을 Chef 서버에 업로드 할때 쓰이는 명령어이다.
         * `knife cookbook upload learn_chef_httpd`
     * `role`
         * `create` : role을 생성
-        * `from file` : 주어진 파일을 이용하여 role에 대한 configuration이 이루어짐(`.json` 형태여야 함)
+        * `from file [filename]` : 주어진 파일을 이용하여 role에 대한 configuration이 이루어짐(`.json` 형태여야 함)
         * `show` : 주어진 role에 대한 정보를 출력
         * `list` : role의 목록을 출력
+    * `search`
+        * `node`
+            * `role:[role_name]`
+                * 주어진 이름의 role을 가지는 노드를 검색
 
 
 * `berks`

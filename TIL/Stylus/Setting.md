@@ -1,3 +1,10 @@
+# Webpack 으로 세팅할 경우
+
+### config.webpack.js 설정
+```js
+
+```
+
 # Brunch 로 세팅할 경우
 
 ### 설치
