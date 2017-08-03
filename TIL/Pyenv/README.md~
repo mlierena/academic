@@ -1,0 +1,22 @@
+# Requirements
+* gcc
+* readline
+* bzip
+
+# Installation
+
+```sh
+yum install -y bzip2 gcc readline
+
+git clone https://github.com/pyenv/pyenv ~/.pyenv
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile
+echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
+
+echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
+
+source ~/.bash_profile
+
+pip install flask sqlalchemy requests
+
+```
+
