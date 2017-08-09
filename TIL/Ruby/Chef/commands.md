@@ -14,7 +14,7 @@
     * `ssh`
         * 지정한 머신에 ssh를 통해 접속
     * `bootstrap`
-        * 부트스트래핑은 Chef 서버에 노드를 등록하여 chef-client를 설치하여, 점검하는 과정을 의미한다. 따라서, one-time process 이다.
+        * 부트스트래핑은 Chef 서버에 노드를 등록하고, 등록한 노드에 chef-client를 설치하여, 점검하는 과정을 의미한다. 따라서, one-time process 이다.
         * ssh 키 기반 인증 : `knife bootstrap ADDRESS --ssh-user USER --sudo --identity-file IDENTITY_FILE --node-name node1-centos --run-list 'recipe[learn_chef_httpd]`
         * 비밀번호 기반 인증 : `knife bootstrap ADDRESS --ssh-user USER --ssh-password 'PASSWORD' --sudo --use-sudo-password --node-name node1-centos --run-list 'recipe[learn_chef_httpd]'`
             * ex) 해당 노드에 아이디, 패스워드로 접근하여, 특정 role을 부여하고 세팅하는 작업
@@ -36,3 +36,15 @@
 * `berks`
     * `install` : 로컬에 의존성 라이브러리 설치
     * `upload` : 쿡북과 의존성 라이브러리들을 chef server에 설치
+
+
+
+* `chef`
+    * `generate`
+        * `cookbook` : 쿡북 프로젝트 디렉토리를 생성한다.
+        * `attribute default` : 쿡북 프로젝트에서 쓰이는 `default.rb` 파일을 생성한다.
+        * `template default.conf` : 템플릿 파일을 생성
+        * `recipe` : 레시피 파일 생성
+
+
+* `knife` : 테스트 목적으로 쓰는 커맨드

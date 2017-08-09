@@ -13,3 +13,5 @@
 * 쿡북 : configuration, policy distribution 등의 목적으로 사용되는 기본적인 단위
     * chef 확장기능, 레시피, 템플릿 등을 포함한다.
 * 데이터 백 : 쉐프 서버에서 접근가능하며, JSON 의 형식으로 주어지는 전역변수
+    * 인증서, API 키, 비밀번호 등과 같은 정보를 암호화시킨 형태로 저장되기도 한다.
+    * `data_bag_item('passwords', 'mysql')` : password라는 데이터백에서 mysql이라는 이름을 가진 데이터백 아이템을 불러온다
