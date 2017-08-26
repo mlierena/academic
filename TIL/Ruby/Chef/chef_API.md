@@ -34,6 +34,6 @@ end
 * `group` : 주어진 파일에 대한 접근권한을 가진 그룹 설정
 * `mode` : 주어진 파일의 접근권한 설정
 
-# template
+# template `filename`
 * `source` : `.erb` 확장자로 되어 있는 템플릿 파일을 불러온다
 * `variables( args )` : 해시의 형태로 템플릿에 채워넣을 변수의 값을 지정해준다. 

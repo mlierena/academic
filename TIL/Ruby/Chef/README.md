@@ -15,3 +15,24 @@
 * 데이터 백 : 쉐프 서버에서 접근가능하며, JSON 의 형식으로 주어지는 전역변수
     * 인증서, API 키, 비밀번호 등과 같은 정보를 암호화시킨 형태로 저장되기도 한다.
     * `data_bag_item('passwords', 'mysql')` : password라는 데이터백에서 mysql이라는 이름을 가진 데이터백 아이템을 불러온다
+* attribute : 반복적으로 하드코딩된 부분을 줄이는데 도움이 된다. (상수로 써먹는 역할)
+
+
+
+## Chef 클러스터를 이루는 요소들
+
+### Chef server
+* 쿡북/레시피를 저장해두는 역할
+* 관리되는 노드들의 정보를 DB에 저장(postgres)
+
+### Workstation
+* Chef 서버와 통신할 수 있는 디바이스(ssh로 연결됨)
+* knife 같은 커맨드라인 툴로 쿡북/레시피를 업로드
+* 노드를 등록할 때는 knife bootstrap 명령으로 chef-client를 옮겨주는 작업을 해야함
+    * chef-client : 의도한대로 시스템을 세팅할 수 있도록 레시피를 chef 서버에서 내려받아서 실행
+* 노드에 역할부여하고, 각 역할마다 어떤 일 수행할지 지정
+
+### Node
+* Chef 서버에 의해 관리되는 서버들
+* 부트스트랩 과정에서 Chef 서버에서 chef-client를 내려받아 쿡북에 명시한대로 시스템이 세팅됨
+* Mesos agent로 사용할 노드, Mesos master로 사용할 노드, Zookeeper로 사용할 노드, Ejabberd를 사용할 노드를 따로따로 지정하고 싶을 때 role 을 지정해준다. 
